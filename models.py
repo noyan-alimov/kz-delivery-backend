@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -23,6 +23,7 @@ class Courier(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(180), nullable=False)
+    orders = db.relationship('Order', backref='couriers', lazy=True)
 
 
 class Client(db.Model):
@@ -30,3 +31,16 @@ class Client(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(180), nullable=False)
+    orders = db.relationship('Order', backref='clients', lazy=True)
+
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+
+    id = Column(Integer, primary_key=True)
+    item = Column(String(180), nullable=False)
+    from_address = Column(String, nullable=False)
+    to_address = Column(String, nullable=False)
+    price = Column(Integer, nullable=False)
+    courier_id = Column(Integer, ForeignKey('couriers.id'), nullable=False)
+    client_id = Column(Integer, ForeignKey('clients.id'), nullable=False)

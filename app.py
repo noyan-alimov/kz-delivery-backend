@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
-from models import setup_db
+from models import setup_db, Courier, Client, Order
 
 
 def create_app(test_config=None):
