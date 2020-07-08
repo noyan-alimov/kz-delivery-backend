@@ -48,8 +48,8 @@ class Courier(db.Model):
 
     def format(self):
         return {
-        'id': self.id,
-        'name': self.name
+            'id': self.id,
+            'name': self.name
         }
 
 
@@ -82,8 +82,8 @@ class Client(db.Model):
 
     def format(self):
         return {
-        'id': self.id,
-        'name': self.name
+            'id': self.id,
+            'name': self.name
         }
 
 
@@ -124,10 +124,10 @@ class Order(db.Model):
 
     def format(self):
         return {
-        'id': self.id,
-        'item': self.item,
-        'from_address': self.from_address,
-        'to_address': self.to_address,
-        'price': self.price,
-        'client_id': self.client_id
+            'id': self.id,
+            'item': self.item,
+            'from_address': self.from_address,
+            'to_address': self.to_address,
+            'price': self.price,
+            'client_id': self.client_id
         }
