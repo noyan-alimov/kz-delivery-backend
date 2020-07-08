@@ -1,7 +1,9 @@
 import os
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
+
 from models import setup_db, Courier, Client, Order
+from auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
@@ -76,7 +78,8 @@ def create_app(test_config=None):
             client.close()
 
     @app.route('/orders', methods=['POST'])
-    def create_order():
+    @requires_auth('create:order')
+    def create_order(token):
         body = request.get_json()
         if not body:
             abort(400)
@@ -103,7 +106,8 @@ def create_app(test_config=None):
             order.close()
 
     @app.route('/orders/<int:order_id>', methods=['PATCH'])
-    def update_courier_picks_order(order_id):
+    @requires_auth('update:order')
+    def update_courier_picks_order(token, order_id):
         body = request.get_json()
         if not body:
             abort(400)
@@ -127,7 +131,8 @@ def create_app(test_config=None):
 
 
     @app.route('/couriers/<int:courier_id>/orders')
-    def get_taken_orders_for_courier(courier_id):
+    @requires_auth('get:orderscourier')
+    def get_taken_orders_for_courier(token, courier_id):
         orders = Order.query.filter_by(courier_id=courier_id).all()
         if len(orders) == 0:
             abort(404)
@@ -143,7 +148,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/clients/<int:client_id>/orders')
-    def get_accepted_orders_for_client(client_id):
+    @requires_auth('get:ordersclient')
+    def get_accepted_orders_for_client(token, client_id):
         orders = Order.query.filter_by(client_id=client_id).all()
         if len(orders) == 0:
             abort(404)
@@ -160,7 +166,8 @@ def create_app(test_config=None):
 
 
     @app.route('/couriers/<int:courier_id>', methods=['DELETE'])
-    def delete_courier(courier_id):
+    @requires_auth('delete:courier')
+    def delete_courier(token, courier_id):
         courier = Courier.query.filter_by(id=courier_id).one_or_none()
         if courier is None:
             abort(404)
@@ -211,6 +218,10 @@ def create_app(test_config=None):
             'error': 400,
             'message': 'bad request'
         }), 400
+
+    @app.errorhandler(AuthError)
+    def auth_error(e):
+        return jsonify(e.error), e.status_code
 
     return app
 
