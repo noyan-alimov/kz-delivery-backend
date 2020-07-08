@@ -20,7 +20,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        orders = Order.query.all()
+        orders = Order.query.filter_by(courier_id=None).order_by(Order.id).all()
         formatted_orders = [order.format() for order in orders]
 
         try:
@@ -34,10 +34,10 @@ def create_app(test_config=None):
     @app.route('/couriers', methods=['POST'])
     def create_courier():
         body = request.get_json()
-        name = body.get('name', None)
+        if not body:
+            abort(400)
 
-        if name is None:
-            abort(404)
+        name = body.get('name', None)
 
         courier = Courier(name=name)
 
@@ -45,13 +45,86 @@ def create_app(test_config=None):
             courier.insert()
             return jsonify({
             'success': True,
-            'created_id': courier.id
+            'new_courier_id': courier.id
             })
         except:
             courier.rollback()
             abort(422)
         finally:
             courier.close()
+
+    @app.route('/clients', methods=['POST'])
+    def create_client():
+        body = request.get_json()
+        if not body:
+            abort(400)
+
+        name = body.get('name', None)
+
+        client = Client(name=name)
+
+        try:
+            client.insert()
+            return jsonify({
+            'success': True,
+            'new_client_id': client.id
+            })
+        except:
+            client.rollback()
+            abort(422)
+        finally:
+            client.close()
+
+    @app.route('/orders', methods=['POST'])
+    def create_order():
+        body = request.get_json()
+        if not body:
+            abort(400)
+
+        item = body.get('item', None)
+        from_address = body.get('from_address', None)
+        to_address = body.get('to_address', None)
+        price = body.get('price', None)
+        client_id = body.get('client_id', None)
+
+        order = Order(item=item, from_address=from_address,
+                    to_address=to_address, price=price, client_id=client_id)
+
+        try:
+            order.insert()
+            return jsonify({
+            'success': True,
+            'new_order_id': order.id
+            })
+        except:
+            order.rollback()
+            abort(422)
+        finally:
+            order.close()
+
+    @app.route('/orders/<int:order_id>', methods=['PATCH'])
+    def update_courier_picks_order(order_id):
+        body = request.get_json()
+        if not body:
+            abort(400)
+
+        courier_id = body.get('courier_id', None)
+
+        order = Order.query.filter_by(id=order_id).first()
+
+        try:
+            order.courier_id = courier_id
+            order.update()
+            return jsonify({
+            'success': True,
+            'courier_id': courier_id,
+            'order_id': order_id
+            })
+        except:
+            abort(422)
+        finally:
+            order.close()
+
 
 
     # Error handlers
@@ -78,6 +151,14 @@ def create_app(test_config=None):
             'error': 405,
             'message': 'method not allowed'
         }), 405
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            'success': False,
+            'error': 400,
+            'message': 'bad request'
+        }), 400
 
     return app
 

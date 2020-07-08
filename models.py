@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 
-database_name = "kzdelivery_test"
+database_name = "kzdelivery"
 database_path = "postgres://postgres:password@{}/{}".format(
     'localhost:5432', database_name)
 
@@ -16,6 +16,8 @@ def setup_db(app, database_path=database_path):
     db.app = app
     db.init_app(app)
     migrate = Migrate(app, db)
+    # db.drop_all()
+    # db.create_all()
 
 
 class Courier(db.Model):
@@ -94,14 +96,15 @@ class Order(db.Model):
     from_address = Column(String, nullable=False)
     to_address = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
-    courier_id = Column(Integer, ForeignKey('couriers.id'), nullable=False)
+    courier_id = Column(Integer, ForeignKey('couriers.id'), nullable=True)
     client_id = Column(Integer, ForeignKey('clients.id'), nullable=False)
 
-    def __init__(self, item, from_address, to_address, price):
+    def __init__(self, item, from_address, to_address, price, client_id):
         self.item = item
         self.from_address = from_address
         self.to_address = to_address
         self.price = price
+        self.client_id = client_id
 
     def insert(self):
         db.session.add(self)
