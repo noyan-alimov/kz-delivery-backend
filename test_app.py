@@ -35,13 +35,13 @@ class TriviaTestCase(unittest.TestCase):
         pass
 
 
-    def test_get_categories(self):
-        res = self.client().get('/categories')
+    def test_get_orders(self):
+        res = self.client().get('/')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(len(data['categories']))
+        self.assertTrue(len(data['orders']))
 
 if __name__ == "__main__":
     unittest.main()

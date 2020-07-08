@@ -18,6 +18,10 @@ def create_app(test_config=None):
                              'GET, POST, PATCH, DELETE, OPTIONS')
         return response
 
+    @app.route('/')
+    def index():
+        
+
     return app
 
 

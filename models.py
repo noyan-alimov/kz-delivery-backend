@@ -25,6 +25,29 @@ class Courier(db.Model):
     name = Column(String(180), nullable=False)
     orders = db.relationship('Order', backref='couriers', lazy=True)
 
+    def __init__(self, name):
+        self.name = name
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def rollback(self):
+        db.session.rollback()
+
+    def format(self):
+        return {
+        'id': self.id,
+        'name': self.name
+        }
+
 
 class Client(db.Model):
     __tablename__ = 'clients'
@@ -32,6 +55,29 @@ class Client(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(180), nullable=False)
     orders = db.relationship('Order', backref='clients', lazy=True)
+
+    def __init__(self, name):
+        self.name = name
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def rollback(self):
+        db.session.rollback()
+
+    def format(self):
+        return {
+        'id': self.id,
+        'name': self.name
+        }
 
 
 class Order(db.Model):
@@ -44,3 +90,32 @@ class Order(db.Model):
     price = Column(Integer, nullable=False)
     courier_id = Column(Integer, ForeignKey('couriers.id'), nullable=False)
     client_id = Column(Integer, ForeignKey('clients.id'), nullable=False)
+
+    def __init__(self, item, from_address, to_address, price):
+        self.item = item
+        self.from_address = from_address
+        self.to_address = to_address
+        self.price = price
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def rollback(self):
+        db.session.rollback()
+
+    def format(self):
+        return {
+        'id': self.id,
+        'item': self.item,
+        'from_address': self.from_address,
+        'to_address': self.to_address,
+        'price': self.price
+        }
