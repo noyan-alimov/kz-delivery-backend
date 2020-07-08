@@ -20,15 +20,12 @@ class TriviaTestCase(unittest.TestCase):
         with self.app.app_context():
             self.db = SQLAlchemy()
             self.db.init_app(self.app)
-            # create all tables
-            self.db.drop_all()
-            self.db.create_all()
+            # drop then create all tables
+            # self.db.drop_all()
+            # self.db.create_all()
 
-        self.new_question = {
-            'answer': 'Agra',
-            'category': 3,
-            'difficulty': 2,
-            'question': 'The Taj Mahal is located in which Indian city?'
+        self.new_courier = {
+            'name': 'John'
         }
 
     def tearDown(self):
@@ -42,6 +39,21 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['orders']))
+
+    def test_create_courier(self):
+        res = self.client().post('/couriers', json=self.new_courier)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['created_id'])
+
+    def test_if_body_not_in_request_to_create_courier(self):
+        res = self.client().post('/couriers/')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
 
 if __name__ == "__main__":
     unittest.main()

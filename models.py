@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 
-database_name = "kzdelivery"
+database_name = "kzdelivery_test"
 database_path = "postgres://postgres:password@{}/{}".format(
     'localhost:5432', database_name)
 
@@ -42,6 +42,9 @@ class Courier(db.Model):
     def rollback(self):
         db.session.rollback()
 
+    def close(self):
+        db.session.close()
+
     def format(self):
         return {
         'id': self.id,
@@ -72,6 +75,9 @@ class Client(db.Model):
 
     def rollback(self):
         db.session.rollback()
+
+    def close(self):
+        db.session.close()
 
     def format(self):
         return {
@@ -111,11 +117,15 @@ class Order(db.Model):
     def rollback(self):
         db.session.rollback()
 
+    def close(self):
+        db.session.close()
+
     def format(self):
         return {
         'id': self.id,
         'item': self.item,
         'from_address': self.from_address,
         'to_address': self.to_address,
-        'price': self.price
+        'price': self.price,
+        'client_id': self.client_id
         }
