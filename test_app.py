@@ -48,7 +48,7 @@ class TriviaTestCase(unittest.TestCase):
         pass
 
 
-    def test_get_orders(self):
+    def test_get_available_orders(self):
         res = self.client().get('/')
         data = json.loads(res.data)
 
@@ -118,6 +118,54 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'bad request')
+
+    def test_get_taken_orders_for_courier(self):
+        res = self.client().get('/couriers/2/orders')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['orders']))
+
+    def test_404_if_courier_does_not_exist(self):
+        res = self.client().get('/couriers/1000/orders')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_get_accepted_orders_for_client(self):
+        res = self.client().get('/clients/1/orders')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['orders']))
+
+    def test_404_if_client_does_not_exist(self):
+        res = self.client().get('/clients/1000/orders')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_delete_courier(self):
+        res = self.client().delete('/couriers/6')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['deleted_courier_id'], 6)
+
+    def test_404_if_courier_does_not_exist_upon_deleting(self):
+        res = self.client().delete('/couriers/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
 
 
 if __name__ == "__main__":

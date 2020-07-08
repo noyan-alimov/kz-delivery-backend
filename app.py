@@ -126,6 +126,58 @@ def create_app(test_config=None):
             order.close()
 
 
+    @app.route('/couriers/<int:courier_id>/orders')
+    def get_taken_orders_for_courier(courier_id):
+        orders = Order.query.filter_by(courier_id=courier_id).all()
+        if len(orders) == 0:
+            abort(404)
+
+        formatted_orders = [order.format() for order in orders]
+
+        try:
+            return jsonify({
+            'success': True,
+            'orders': formatted_orders
+            })
+        except:
+            abort(422)
+
+    @app.route('/clients/<int:client_id>/orders')
+    def get_accepted_orders_for_client(client_id):
+        orders = Order.query.filter_by(client_id=client_id).all()
+        if len(orders) == 0:
+            abort(404)
+
+        formatted_orders = [order.format() for order in orders]
+
+        try:
+            return jsonify({
+            'success': True,
+            'orders': formatted_orders
+            })
+        except:
+            abort(422)
+
+
+    @app.route('/couriers/<int:courier_id>', methods=['DELETE'])
+    def delete_courier(courier_id):
+        courier = Courier.query.filter_by(id=courier_id).one_or_none()
+        if courier is None:
+            abort(404)
+
+        try:
+            courier.delete()
+            return jsonify({
+            'success': True,
+            'deleted_courier_id': courier_id
+            })
+        except:
+            courier.rollback()
+            abort(422)
+        finally:
+            courier.close()
+
+
 
     # Error handlers
     @app.errorhandler(422)
