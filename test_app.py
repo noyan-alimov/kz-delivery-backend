@@ -1,5 +1,6 @@
 import unittest
 import json
+import os
 from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
@@ -11,9 +12,7 @@ class TriviaTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "kzdelivery_test"
-        self.database_path = "postgres://postgres:password@{}/{}".format(
-            'localhost:5432', self.database_name)
+        self.database_path = "postgres://postgres:password@localhost:5432/kzdelivery_test"
         setup_db(self.app, self.database_path)
 
         # binds the app to the current context

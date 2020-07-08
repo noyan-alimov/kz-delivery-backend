@@ -1,11 +1,10 @@
+import os
 from sqlalchemy import Column, String, Integer, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-
-database_name = "kzdelivery"
-database_path = "postgres://postgres:password@{}/{}".format(
-    'localhost:5432', database_name)
+default_path = "postgres://postgres:password@localhost:5432/kzdelivery"
+database_path = os.getenv('DATABASE_URL', default_path)
 
 db = SQLAlchemy()
 
