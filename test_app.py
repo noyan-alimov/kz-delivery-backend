@@ -40,7 +40,7 @@ class TriviaTestCase(unittest.TestCase):
         }
 
         self.courier_picks_order = {
-        'courier_id': 2
+        'courier_id': 1
         }
 
         self.client_token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjJ4OVU2Ty0tVk1QN3NtR3lUY2wtRSJ9.eyJpc3MiOiJodHRwczovL2t6LWRlbGl2ZXJ5LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTU3NTE4MDE2OTUyNDg0Njk3OSIsImF1ZCI6WyJremRlbGl2ZXJ5IiwiaHR0cHM6Ly9rei1kZWxpdmVyeS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTk0MjQyNzc2LCJleHAiOjE1OTQzMTQ3NzYsImF6cCI6IkdBVVZ4WTl2aG1QbTlodmxaWW55TllxMkF5aVZ3VWdPIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInBlcm1pc3Npb25zIjpbImNyZWF0ZTpvcmRlciIsImdldDpvcmRlcnNjbGllbnQiXX0.E6CjdTi45dbNERUn-xIS1VU2ITKlN1wiQhkxoHRW7DJAqv5Vu0TomVLy2oi0iiqTv9dLXa-p9HGX-Wyss2YLKBnWci64XgixUgbzuMrmCWpYFaCLXQTszGLHX-zy4MVxhl9yMfSVdlpX5AkqYtH9PQoEcLQJOwBcCvClq1-ONr3ZRmdGIG51hGz5xbbyqrXUBvhNho0gZdb1pmXYvN2eGKZ8HOFnz2kQdASHFN7I5WtbNqPY1yFUoLYdkWohLom4pP0c9BTus8S-xKxTXaAsY7reHfHzMxl5MS98fddxoM7XEOALRSNT6kI9NpgnfSZB3o5O32U0Iu2mtOepbULEHg"
@@ -116,7 +116,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['courier_id'], 2)
+        self.assertEqual(data['courier_id'], 1)
         self.assertEqual(data['order_id'], 1)
 
     def test_if_body_not_in_request_to_update_order(self):
@@ -129,7 +129,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'bad request')
 
     def test_get_taken_orders_for_courier(self):
-        res = self.client().get('/couriers/2/orders',
+        res = self.client().get('/couriers/1/orders',
                     headers={"Authorization": "Bearer {}".format(self.courier_token)})
         data = json.loads(res.data)
 
@@ -165,13 +165,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'resource not found')
 
     def test_delete_courier(self):
-        res = self.client().delete('/couriers/6',
+        res = self.client().delete('/couriers/1',
                     headers={"Authorization": "Bearer {}".format(self.courier_token)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted_courier_id'], 6)
+        self.assertEqual(data['deleted_courier_id'], 1)
 
     def test_404_if_courier_does_not_exist_upon_deleting(self):
         res = self.client().delete('/couriers/1000',
