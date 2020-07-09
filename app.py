@@ -22,15 +22,16 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        orders = Order.query.filter_by(courier_id=None).order_by(Order.id).all()
+        orders = Order.query.filter_by(
+            courier_id=None).order_by(Order.id).all()
         formatted_orders = [order.format() for order in orders]
 
         try:
             return jsonify({
-            'success': True,
-            'orders': formatted_orders
+                'success': True,
+                'orders': formatted_orders
             })
-        except:
+        except BaseException:
             abort(400)
 
     @app.route('/couriers', methods=['POST'])
@@ -46,10 +47,10 @@ def create_app(test_config=None):
         try:
             courier.insert()
             return jsonify({
-            'success': True,
-            'new_courier_id': courier.id
+                'success': True,
+                'new_courier_id': courier.id
             })
-        except:
+        except BaseException:
             courier.rollback()
             abort(422)
         finally:
@@ -68,10 +69,10 @@ def create_app(test_config=None):
         try:
             client.insert()
             return jsonify({
-            'success': True,
-            'new_client_id': client.id
+                'success': True,
+                'new_client_id': client.id
             })
-        except:
+        except BaseException:
             client.rollback()
             abort(422)
         finally:
@@ -91,15 +92,15 @@ def create_app(test_config=None):
         client_id = body.get('client_id', None)
 
         order = Order(item=item, from_address=from_address,
-                    to_address=to_address, price=price, client_id=client_id)
+                      to_address=to_address, price=price, client_id=client_id)
 
         try:
             order.insert()
             return jsonify({
-            'success': True,
-            'new_order_id': order.id
+                'success': True,
+                'new_order_id': order.id
             })
-        except:
+        except BaseException:
             order.rollback()
             abort(422)
         finally:
@@ -120,16 +121,15 @@ def create_app(test_config=None):
             order.courier_id = courier_id
             order.update()
             return jsonify({
-            'success': True,
-            'courier_id': courier_id,
-            'order_id': order_id
+                'success': True,
+                'courier_id': courier_id,
+                'order_id': order_id
             })
-        except:
+        except BaseException:
             order.rollback()
             abort(422)
         finally:
             order.close()
-
 
     @app.route('/couriers/<int:courier_id>/orders')
     @requires_auth('get:orderscourier')
@@ -142,10 +142,10 @@ def create_app(test_config=None):
 
         try:
             return jsonify({
-            'success': True,
-            'orders': formatted_orders
+                'success': True,
+                'orders': formatted_orders
             })
-        except:
+        except BaseException:
             abort(422)
 
     @app.route('/clients/<int:client_id>/orders')
@@ -159,12 +159,11 @@ def create_app(test_config=None):
 
         try:
             return jsonify({
-            'success': True,
-            'orders': formatted_orders
+                'success': True,
+                'orders': formatted_orders
             })
-        except:
+        except BaseException:
             abort(422)
-
 
     @app.route('/couriers/<int:courier_id>', methods=['DELETE'])
     @requires_auth('delete:courier')
@@ -176,16 +175,14 @@ def create_app(test_config=None):
         try:
             courier.delete()
             return jsonify({
-            'success': True,
-            'deleted_courier_id': courier_id
+                'success': True,
+                'deleted_courier_id': courier_id
             })
-        except:
+        except BaseException:
             courier.rollback()
             abort(422)
         finally:
             courier.close()
-
-
 
     # Error handlers
     @app.errorhandler(422)

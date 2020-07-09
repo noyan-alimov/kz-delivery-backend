@@ -1,13 +1,14 @@
 import json
+import os
 from flask import request, _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'kz-delivery.eu.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'kzdelivery'
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', None)
+ALGORITHMS = os.getenv('ALGORITHMS', None)
+API_AUDIENCE = os.getenv('API_AUDIENCE', None)
 
 
 class AuthError(Exception):
@@ -125,7 +126,7 @@ def requires_auth(permission=''):
             token = get_token_auth_header()
             try:
                 payload = verify_decode_jwt(token)
-            except:
+            except BaseException:
                 abort(401)
 
             check_permissions(permission, payload)
