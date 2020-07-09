@@ -125,6 +125,7 @@ def create_app(test_config=None):
             'order_id': order_id
             })
         except:
+            order.rollback()
             abort(422)
         finally:
             order.close()
