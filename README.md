@@ -7,7 +7,6 @@ The motivation behind this project is to help people and businesses where delive
 
 ## Getting started
 
-This [project](https://kz-delivery-backend.herokuapp.com/) is deployed via Heroku. You can test API endpoints using curl or postman. Before that, please go through the Sign Up process which is described further below.
 To run the project locally follow the below instructions.
 
 ### Pre-requisites and Local Development
@@ -42,16 +41,6 @@ python test_app.py
 
 The first time you run the tests, omit the dropdb command.
 Please note there are client and courier tokens that will expire. These are only for Udacity submission.
-
-## Sign Up
-
-To sign up and get the tokens follow [this](https://kz-delivery.eu.auth0.com/authorize?audience=kzdelivery&response_type=token&client_id=GAUVxY9vhmPm9hvlZYnyNYq2AyiVwUgO&redirect_uri=http://localhost:3000/) link.
-Sign Up and the token will be in the url as a query parameter.
-
-Or it's better to use the below tokens that already have specific permissions:
-
-- Client: `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjJ4OVU2Ty0tVk1QN3NtR3lUY2wtRSJ9.eyJpc3MiOiJodHRwczovL2t6LWRlbGl2ZXJ5LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTU3NTE4MDE2OTUyNDg0Njk3OSIsImF1ZCI6WyJremRlbGl2ZXJ5IiwiaHR0cHM6Ly9rei1kZWxpdmVyeS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTk0MzIxNDQwLCJleHAiOjE1OTQzOTM0NDAsImF6cCI6IkdBVVZ4WTl2aG1QbTlodmxaWW55TllxMkF5aVZ3VWdPIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInBlcm1pc3Npb25zIjpbImNyZWF0ZTpvcmRlciIsImdldDpvcmRlcnNjbGllbnQiXX0.Wq3GQTJe7HzehiwCDP5CKhKPD03YPBVPT3PYzL1149O5_DMzik-LW3GiLZzmNIcqkb8Zd5SBGpaWIhx7s7jMAlKrq6Vbt4qJo3rNzVRANqmdxtBXSHWHPGzIKpqHob0xPKqpuRJbl8aX_kEjVIZDa_Un4WdMBJ-KRRDGKANNT9IDxBodSWnbeYmCsc-91D3mZC_uo9UATXgiOVIIrYpGccTKYkRKD2sfhOYWpAY5_fvkTOMaKXuzF99k0fdu_W0SBBL00OaCJ3-yMdCK00_97j1WcURjqH-YNgjAHU2ICLfLvXO85ODPCymu7ZvdNU3KAf6-B3tqNHsSU1IsitPE2A`
-- Courier: `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjJ4OVU2Ty0tVk1QN3NtR3lUY2wtRSJ9.eyJpc3MiOiJodHRwczovL2t6LWRlbGl2ZXJ5LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDEwMzg3MzY5MjkyODU5ODk4MjIzOSIsImF1ZCI6WyJremRlbGl2ZXJ5IiwiaHR0cHM6Ly9rei1kZWxpdmVyeS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTk0MzE3MDM0LCJleHAiOjE1OTQzODkwMzQsImF6cCI6IkdBVVZ4WTl2aG1QbTlodmxaWW55TllxMkF5aVZ3VWdPIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpjb3VyaWVyIiwiZ2V0Om9yZGVyc2NvdXJpZXIiLCJ1cGRhdGU6b3JkZXIiXX0.qbarM676kcJIA0JAqys0JbZk4-8URcpXiB7C9r8UFY9M1s3zyvEO9mcc3c0Xnrnn3kiod3fUbN8-bPZ9B6WBFbLR42TL28w2GzfFk8VXZ10bkjaGXelxFqbk93jqYcT87v159F75LHtU0W8XyIzNDA0SHPL-BdQcb0COkuJOMDJ0RKWqDzNQ7jc59cXYB2Ulpz6yrxwfIDJpMRC63hluEatSRq7TEJivlgY5RxzMGp8A1eISrJg9oq-BJLOAadOWoixIBGF2UuEMtaHpBktnWKIRziXI_NAa71iu1DWxXoHkzqF36w3cEpo0Ulb161-y99hLzsc6WTPZtzlglCdORQ`
 
 ## API Reference
 
